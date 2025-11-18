@@ -1,9 +1,9 @@
-
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
-
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
+import muiTheme from "../../theme/muiTheme";
 
 export default function Header({ name = "משתמש" }) {
   const [hour, setHour] = useState(null);
@@ -14,7 +14,7 @@ export default function Header({ name = "משתמש" }) {
   }, []);
 
   const getGreeting = (h) => {
-    if (h === null) return ""; 
+    if (h === null) return "";
     if (h < 6) return "לילה טוב";
     if (h < 12) return "בוקר טוב";
     if (h < 18) return "צהריים טובים";
@@ -29,11 +29,11 @@ export default function Header({ name = "משתמש" }) {
         pb: 1,
         display: "flex",
         flexDirection: "column",
-        gap: 1,
-
+        gap: 1
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1,  position: "absolute", top: 10, right: 16 }}>
+      {/* ICONS - ABSOLUTE RIGHT */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, position: "absolute", top: 10, right: 16 }}>
         <IconButton aria-label="calendar">
           <CalendarMonthRoundedIcon sx={{ color: "#6C1B3D" }} />
         </IconButton>
@@ -43,15 +43,28 @@ export default function Header({ name = "משתמש" }) {
         </IconButton>
       </Box>
 
-      <Box>
-        <Typography variant="subtitle2" sx={{ color: "#666", mb: 0.3 }}>
-        </Typography>
+      {/* LOCATION */}
+      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 ,mt: 3}}>
+        <LocationOnRoundedIcon sx={{ fontSize: "18px", color: "#6C1B3D" }} />
+        <Box>
+          <Typography variant="caption" sx={{ color: "#000", display: "block", fontSize: "15px", lineHeight: 1 }}>
+            Location
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.2 }}>
+            <Typography sx={{ fontWeight: 700, fontSize: "13px", color: "#000" }}>
+              ישראל
+            </Typography>
+            <Typography sx={{ fontSize: "13px", color: "#000" }}>▼</Typography>
+          </Box>
+        </Box>
+      </Box>
 
-        <Typography variant="h6" sx={{ fontWeight: 600, color: "#222" }}>
-          {getGreeting(hour)}
-          {"\u00A0"}
-          <Typography component="span" sx={{ fontWeight: 800, color: "#6C1B3D" }}>
-            {name}
+      {/* GREETING */}
+      <Box >
+
+        <Typography variant="h6" sx={{ fontWeight: 600, color: "#222" , position: "absolute", top: 70, right: 16}}>
+          היי {name}, <Typography component="span" sx={{ color: "primary.main", fontWeight: 700 }}>
+             {getGreeting(hour)}
           </Typography>
         </Typography>
       </Box>

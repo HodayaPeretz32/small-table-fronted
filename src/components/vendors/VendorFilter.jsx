@@ -5,9 +5,9 @@ export default function VendorFilter({ onSearch }) {
   return (
     <Box
       sx={{
-        width:"calc(100vw - 19%)", // כל רוחב המסך
+        width:"calc(100vw - 10.5%)", // כל רוחב המסך
         px: 2, // רווח קטן מהצדדים
-        mt: 2,
+        mt: 4,
       }}
     >
       <TextField
@@ -19,14 +19,14 @@ export default function VendorFilter({ onSearch }) {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon sx={{ color: "grey.500", fontSize: 30 }} />
+              <SearchIcon sx={{ color: "grey.500", fontSize: 23 }} />
             </InputAdornment>
           ),
           sx: {
-            borderRadius: "20px",
+            borderRadius: "7px",
             backgroundColor: "#f7f7f7",
             height: "60px",
-            fontSize: "1.1rem",
+            fontSize: "0.9rem",
           },
         }}
         sx={{

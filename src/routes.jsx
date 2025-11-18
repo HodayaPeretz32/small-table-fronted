@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import LoadingPage from "./pages/LoadingPage";
+import PackageDetails from "./components/packages/PackageDetails"; 
 
 export default function AppRoutes() {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,11 +19,11 @@ export default function AppRoutes() {
       )}
 
       {/* עמוד הבית נטען ברקע */}
-      <div style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.5s ease" }}>
-        <Routes>
+      <div style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.5s ease" }}>        <Routes>
           <Route path="/" element={<HomePage onLoaded={() => setIsLoading(false)} />} />
            <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/cart" element={<CartPage />} />
+           <Route path="/cart" element={<CartPage />} />
+            <Route path="/packages/:vendorId" element={<PackageDetails />} />
         </Routes>
       </div>
       
