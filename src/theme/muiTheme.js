@@ -1,6 +1,3 @@
-
-
-
 import { createTheme } from "@mui/material/styles";
 import themeConfig from "./themeConfig";
 
@@ -48,3 +45,4 @@ const muiTheme = createTheme({
 });
 
 export default muiTheme;
+

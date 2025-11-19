@@ -1,12 +1,18 @@
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './routes';
-
+import { ThemeProvider } from '@emotion/react';
+import './App.css'
+import muiTheme from './theme/muiTheme';
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  );
+    <>
+    <ThemeProvider theme={muiTheme}>
+       <BrowserRouter>
+      <AppRoutes/>
+        </BrowserRouter>
+    </ThemeProvider>
+    </>
+  )
 }
 
 export default App;

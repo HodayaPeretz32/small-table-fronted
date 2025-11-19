@@ -1,11 +1,11 @@
 const themeConfig = {
   colors: {
-    primary: "#6A1B1A",
+    primary: "#6B0F1A", 
     secondary: "#F3E5F5",
     text: "#333333",
     background: "#FFFFFF",
   },
-  fontFamily: "'Assistant', sans-serif",
+  fontFamily: "Poppins, Arial, sans-serif",
   borderRadius: 12,
 };
 
