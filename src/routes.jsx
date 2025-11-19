@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
-import CartPage from "./pages/CartPage";
 import LoadingPage from "./pages/LoadingPage";
 import PackageDetails from "./components/packages/PackageDetails"; 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
