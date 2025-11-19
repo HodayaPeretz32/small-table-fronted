@@ -1,76 +1,78 @@
-import {Box, Button, Card, CardContent, CardMedia, Divider, TextField, Typography} from "@mui/material"
-import image from "../../assets/Frame 11712759421.png"
+import {Box, Button, Card, CardContent, CardMedia, Divider, IconButton, TextField, Typography} from "@mui/material"
 import { useState } from "react";
+import { useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { calculateDeliveryFee, calculateSubtotal, calculateTotal } from "../../utils/orderCalculations";
 
   export default function OrderSummary() {
-    
-    const addOns = [
-      { id: 1, name: "Moong Dal Halwa", size: "8 Oz", price: 9, img: "/images/halwa1.jpg" },
-      { id: 2, name: "Monday Day 01", size: "20 Oz njn", price: 16, img: "/images/halwa2.jpg" },
-      { id: 3, name: "Gajar Ka Halwa", size: "16 Oz", price: 16, img: "/images/gajar.jpg" },
-      { id: 4, name: "Dahi Bhalla", size: "24 Oz", price: 15, img: "/images/dahi.jpg" },
-    ];
 
-    const subtotal = 14;
-    const delivery = 1;
     const [tip,setTip]=useState("");
-    const [total,setTotal]=useState(subtotal + delivery);
+    const [appliedTip, setAppliedTip] = useState(0);
     const navigate = useNavigate();
-
-    const handleAddTip = () =>{
-      const newTotal=subtotal + delivery +(Number(tip)||0);
-      setTotal(newTotal)
-    }
-
-    const handleOrderNow = () => {
-      navigate("/checkout");
-      console.log("njknk");
+    const cartItems = useSelector((state) => state.cart.items);
+    const subtotal = calculateSubtotal(cartItems);
+    const delivery = calculateDeliveryFee(cartItems);
+    const total = calculateTotal(cartItems, appliedTip);
+    const handleAddTip = () => {
+      setAppliedTip(Number(tip) || 0);
     };
+
+  const handleOrderNow = () => {navigate("/address");};
+
+  const firstImage = cartItems[0]?.img;
+  const firstTitle = cartItems[0]?.name;
 
 
     return(
-        <Box sx={{maxWidth:375 ,margin:"0 auto",padding:2}}>
-          {/* <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Box sx={{maxWidth:375 ,margin:"0 auto",px:2}}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <IconButton size="small">
             <ArrowBackIosNewIcon />
             </IconButton>
-            <Typography variant="h6" fontWeight="bold" sx={{ml:1}} >order Summary</Typography>
-          </Box> */}
-            <Card sx={{borderRadius: 2, boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",mb:3,textAlign:"left" ,overflow: "hidden",width:"335px"}}>
-                <CardMedia  sx={{height: 140,objectFit:"cover",borderRadius: 4 ,mx:"auto",mt:1.5}} component="img" image={image} alt="dish"
+            <Typography variant="h6" fontWeight="bold" sx={{ml:1}} >Order Summary</Typography>
+          </Box>
+            <Card sx={{width: 335,borderRadius: "16px", boxShadow: "0px 4px 20px rgba(0,0,0,0.05)",mb:3,textAlign:"left" ,overflow: "hidden"}}>
+                <CardMedia component="img"src={firstImage} alt={firstTitle} 
+                 sx={{width: "100%",height: 160,objectFit:"cover",borderRadius: "16px 16px 0 0"}} 
                 />
-                <CardContent>
-                  <Typography variant="subtitle1" fontWeight="bold">{addOns[1].name}</Typography>
-                  <Typography variant="body2" color="#9DB2BF" >{addOns[1].size}</Typography>
-                  <Typography variant="body2" color="#9DB2BF">{addOns[1].price}</Typography>
-                  <Typography variant="body2" color="#9DB2BF">{addOns[1].price}$</Typography>
+                <CardContent sx={{ p: 2 }}>
+                  <Typography sx={{fontWeight: 600,fontSize: 16,mb: 1}}>
+                    {firstTitle}</Typography>
+                      <Box sx={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                       {cartItems.map((item) => (
+                   <Typography
+          key={item.id}
+          sx={{fontSize: 12,color: "#8E8E93",mb:0.3}}
+        >
+          {item.name}
+        </Typography>
+      ))}
+    </Box>
                 </CardContent>
-            </Card>
-            
-            <Box sx={{ mb:3 ,color:"#691C2B",display:"flex",flexDirection: "column", gap:"15px",width:"334.05px",letterSpacing: "0.5px"}}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", gap:1.2 }}>
-              <Typography sx={{fontSize:"14px",fontWeight:500}}>Subtotal</Typography>
-              <Typography sx={{fontSize:"14px",fontWeight:500}}>${subtotal}</Typography>
+             </Card>
+             <Box sx={{ width: 335, mx: "auto", mb: 3 ,mt: -2}}>
+             <Box sx={{ display: "flex", justifyContent: "space-between", mb:2 }}>
+               <Typography sx={{fontSize:14}}>Subtotal</Typography>
+             <Typography sx={{fontSize:14}}>${subtotal}</Typography>
             </Box>
-            <Box sx={{display: "flex", justifyContent: "space-between", gap:1.2 }}>
-              <Typography sx={{fontSize:"14px",fontWeight:500}}>Delivery Fee</Typography>
-              <Typography sx={{fontSize:"14px",fontWeight:500}}>${delivery}</Typography>
-            </Box>
-            <Box sx={{display: "flex", justifyContent: "space-between",letterSpacing: "0.64px"}}>
-              <Typography sx={{fontSize:"15px",fontWeight:600}}>Total</Typography>
-              <Typography sx={{fontSize:"15px",fontWeight:600}}>${total}</Typography>
-            </Box>
-            </Box>
-
+           <Box sx={{display: "flex", justifyContent: "space-between", mb:2 }}>
+              <Typography sx={{fontSize:14}}>Delivery Fee</Typography>
+              <Typography sx={{fontSize:14}}>${delivery}</Typography>
+             </Box>
+             <Box sx={{display: "flex", justifyContent: "space-between", mb:2,color:"#691C2B"}}>
+               <Typography sx={{fontSize:15,fontWeight:600}}>Total</Typography>
+               <Typography sx={{fontSize:15,fontWeight:600 }}>${total}</Typography>
+             </Box>
+           </Box>
            { /* ADD TIP*/}
            <Typography sx={{fontSize: "11px",fontWeight: 400,letterSpacing: "0.5px",color: "#32343E",mb: "5px",textAlign:"left"}}>
-            ADD TIP
+           ADD TIP
            </Typography>
            <Box sx={{ display:"flex", alignItems:"center",mb:3}}>
-            <TextField type="number" label="Enter amount"
-             variant="outlined" size="small" value={tip}
+             <TextField type="number" label="Enter amount"
+              value={tip}
+              onChange={(e)=>setTip(e.target.value)}
                inputProps={{
                 min: 0,
                 step: "5"
@@ -78,15 +80,18 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
               onKeyDown={(e) => {
                 if (e.key === "-" )e.preventDefault();
               }}
-             onChange={(e)=>setTip(e.target.value)}
-             sx={{flexGrow:1, mr:1, "& .MuiOutlinedInput-root": {
-              borderRadius: 2,
-              backgroundColor: "#F4F6F8",
-              width:252,height:46
-            },}}/>
+              sx={{
+                flexGrow: 1,
+                mr: 1,
+                "& .MuiOutlinedInput-root": {
+                  height: 48,
+                  backgroundColor: "#F4F6F8",
+                  borderRadius: "12px",
+                },
+              }}/>
             <Button variant="contained"
-             sx={{backgroundColor:"#6B0F1A", borderRadius:2,px:2,width:72,height:46,
-              "&:hover": { backgroundColor: "#520B13" }
+             sx={{backgroundColor:"#6B0F1A",borderRadius: 3, width: 72, height: 46,fontSize:14, textTransform: "none",
+              "&:hover": { backgroundColor: "#520B13",}
              }}
              onClick={handleAddTip}
              >
@@ -96,12 +101,12 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
            {/* ACTION BUTTONS */}
            <Box sx={{display:"flex",gap:2}}>
             <Button fullWidth variant="outlined"
-             sx={{ borderRadius:"12px",color: "#6B0F1A",borderColor: "#6B0F1A",fontWeight:700,width:157.5,height:62}}>
+             sx={{ borderRadius:"12px",color: "#6B0F1A",borderColor: "#6B0F1A",fontWeight:600,height:62,fontSize: 16, textTransform: "none"}}>
              Add to Card
             </Button>
             <Button fullWidth variant="contained"
              onClick={handleOrderNow}
-             sx={{borderRadius:"12px",backgroundColor: "#6B0F1A",fontWeight: 700,width:157.5,height:62,
+             sx={{borderRadius:"12px",backgroundColor: "#6B0F1A",fontWeight: 600,height:62,fontSize: 16, textTransform: "none",
               "&:hover": { backgroundColor: "#520B13" }
               }}>
               Order Now
@@ -110,4 +115,3 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
         </Box>
     );
   }
-  
