@@ -2,9 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {Box, Button, Card, IconButton, CardContent, CardMedia, Divider, TextField, Typography} from "@mui/material"
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import {increaseQty,decreaseQty} from "../app/features/cartSlice"
+import {increaseQty,decreaseQty,setTip} from "../app/features/cartSlice";
 import { useNavigate } from "react-router-dom";
 import {useState } from "react";
+import Navigation from "../components/layout/Navigation"
 import { calculateDeliveryFee, calculateSubtotal, calculateTotal } from "../utils/orderCalculations";
 
 export default function CartPage() {
@@ -13,26 +14,23 @@ export default function CartPage() {
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.items);
-  const [tip,setTip]=useState("");
-  const [appliedTip, setAppliedTip] = useState(0);
+  const cartTip = useSelector((state) => state.cart.tip);
+  const [tipValue,setTipValue]=useState(cartTip || "");
   const subtotal = calculateSubtotal(cartItems);
   const delivery = calculateDeliveryFee(cartItems);
-  const total = calculateTotal(cartItems, appliedTip);
-    
+  const total = calculateTotal(cartItems, cartTip);
+  
   const handleAddTip = () =>{
-    setAppliedTip(Number(tip) || 0);
+    dispatch(setTip(Number(tipValue)));
   }
-
   const handleOrderSummary =()=> navigate("/summary");
 
   return (
   <>
-    <Box
-      sx={{
-        maxWidth: 375,mx: "auto",px: "20px",}}
+    <Box sx={{width:"100%",mt:2,px:2,display:"flex",flexDirection: "column", }}
     >
         <Typography
-          sx={{fontSize: 22,fontWeight: 700,mb: 3}}>
+          sx={{fontSize: 22,fontWeight: 700,mb: 3,textAlign:"center"}}>
           Cart
         </Typography>
 
@@ -51,7 +49,7 @@ export default function CartPage() {
           >
             <Box
               component="img"
-              src={item.img}
+              src={item.image}
               sx={{width: 70,height: 70,borderRadius: "12px",objectFit: "cover",  mr: 2}}
             />
             <Box sx={{ flexGrow: 1, textAlign: "left" }}>
@@ -75,7 +73,7 @@ export default function CartPage() {
               <IconButton
                 onClick={() => dispatch(decreaseQty(item.id))}
                 sx={{
-                  width: 26,height: 26, borderRadius: 2,backgroundColor: "#F2F2F2",
+                  width: 26,height: 26, borderRadius: "8px",backgroundColor: "#F2F2F2",
                   "& svg": { fontSize: "16px", color: "#6E6E6E" },
                   "&:hover": { backgroundColor: "#540C14" },
                 }}
@@ -89,7 +87,7 @@ export default function CartPage() {
 
               <IconButton
                 onClick={() => dispatch(increaseQty(item.id))}
-                sx={{width: 26,height: 26,borderRadius: 2,
+                sx={{width: 26,height: 26,borderRadius: "8px",
                   backgroundColor: "#6B0F1A", color: "white",
                   "&:hover": { backgroundColor: "#540C14" },
                 }}
@@ -101,7 +99,7 @@ export default function CartPage() {
         ))}
 
         {/* ADD TIP */}
-        <Box sx={{marginTop:6}}>
+        <Box sx={{mt:12}}>
         <Typography
           sx={{
             fontSize: "11px",fontWeight: 400,letterSpacing: "0.5px",
@@ -115,13 +113,20 @@ export default function CartPage() {
             type="number"
             label="Enter amount"
             size="small"
-            value={tip}
-            onChange={(e) => setTip(e.target.value)}
+            value={tipValue}
+            onChange={(e) => setTipValue(e.target.value)}
+            inputProps={{
+              min: 0,
+              step: "5"
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "-" )e.preventDefault();
+            }}
             sx={{
               flexGrow: 1,
               mr: 1,
               "& .MuiOutlinedInput-root": {
-                borderRadius: 2,
+                borderRadius: "12px",
                 backgroundColor: "#F4F6F8",
                 height: 46,
               },
@@ -131,7 +136,7 @@ export default function CartPage() {
           <Button
             variant="contained"
             sx={{backgroundColor: "#6B0F1A",textTransform: "none",
-              borderRadius: 3, width: 72, height: 46}}
+              borderRadius: "12px", width: 72, height: 46}}
             onClick={handleAddTip}
           > Add</Button>
         </Box>
@@ -139,7 +144,7 @@ export default function CartPage() {
 
         {/* Subtotal / Delivery / Total */}
         <Box
-          sx={{mb: 3,display: "flex", flexDirection: "column",gap: "15px",}}
+          sx={{mb: 3,display: "flex", flexDirection: "column",gap: "15px",mt:3}}
         >
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>
@@ -170,38 +175,35 @@ export default function CartPage() {
       </Box>
     </Box>
 
-<Box sx={{ maxWidth: 375, mx: "auto" }}>
-  <Box
-    sx={{
-      backgroundColor: "#691C2B",borderTopLeftRadius: "30px",
-      borderTopRightRadius: "30px",py: "20px",px: "20px",
-    }}
-  >
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        color: "white",
-      }}
-    >
-      <Box textAlign={"left"}>
-        <Typography sx={{ fontSize: "14px" }}>Total</Typography>
-        <Typography sx={{ fontSize: "22px", fontWeight: 700 }}> $ {total}</Typography>
-      </Box>
+       <Box sx={{ width: "100%",mt:7}}>
+       <Box
+          sx={{backgroundColor: "#691C2B",borderTopLeftRadius: "30px",
+            borderTopRightRadius: "30px",py: "20px",px: "20px"
+          }}
+        >
+          <Box
+            sx={{display: "flex",justifyContent: "space-between",color: "white" }}
+          >
+            <Box textAlign={"left"}>
+              <Typography sx={{ fontSize: "14px" }}>Total</Typography>
+              <Typography sx={{ fontSize: "22px", fontWeight: 700 }}>
+                ${total}
+              </Typography>
+            </Box>
 
-      <Button
-        onClick={handleOrderSummary}
-        sx={{backgroundColor: "#8C4A54",color: "white",borderRadius: "40px",
-          px: 4,py: 1.5,fontWeight: 700,
-          textTransform: "none",fontSize: "15px",
-          "&:hover": { backgroundColor: "#7A3E48" },
-        }}
-      >
-        Check Out
-      </Button>
-    </Box>
-  </Box>
-</Box>
+            <Button onClick={handleOrderSummary}
+              sx={{backgroundColor: "#8C4A54",color: "white",borderRadius: "40px",
+                px: 4,py: 1.5,fontWeight: 700,textTransform: "none",
+                fontSize: "15px",
+                "&:hover": { backgroundColor: "#7A3E48" }
+              }}
+            >
+              Check Out
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+      <Navigation/>
   </>
 );
 }
