@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {Box, Button, Card, IconButton, CardContent, CardMedia, Divider, TextField, Typography} from "@mui/material"
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import {increaseQty,decreaseQty} from "../features/cartSlice";
+import {increaseQty,decreaseQty} from "../app/features/cartSlice"
 import { useNavigate } from "react-router-dom";
 import {useState } from "react";
 import { calculateDeliveryFee, calculateSubtotal, calculateTotal } from "../utils/orderCalculations";
