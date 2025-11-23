@@ -117,7 +117,7 @@ export default function VendorList({ vendores, loading, error }) {
   }
 
   return (
-    <Box sx={{ p: 2,  width: "calc(100vw - 10.5%)" ,mb:"23px"}}>
+    <Box sx={{ mb: "23px", px: 2 }}>
       {vendores.map((vendore) => (
         <VendorCard key={vendore.id} vendore={vendore} />
       ))}
