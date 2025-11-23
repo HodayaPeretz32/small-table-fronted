@@ -49,29 +49,29 @@ export default function OrderAddressSelection() {
   }
 
   return (
-    <Box   sx={{maxWidth: 375,mx: "auto",mt:-20, px: 10}}>
-      <Box sx ={{display:"flex", alignItems: "center",mb:3}}>
+   <Box   sx={{mt:2}}>
+      <Box sx ={{display:"flex", alignItems: "center",mb:4}}>
         <IconButton onClick={handleBack}>
           <ArrowBackIosNewIcon />
         </IconButton>
-        <Typography sx={{fontWeight: 400}}>
+        <Typography sx={{fontWeight: 400, ml:1}}>
           Order Summary
         </Typography>
       </Box>
-      <Box sx={{width:335,display: "flex",flexDirection:"column",mx:"auto",gap: "20px"}}>
+      <Box sx={{display: "flex",flexDirection:"column",gap: 2}}>
       {addresses.map((item) => {
           const isSelected = item.id === selectedId;
           return (
-            <Box key={item.id} sx={{display:"flex",alignItems:"center",width:335,height:61,mx:"auto",
+            <Box key={item.id} sx={{display:"flex",alignItems:"center",width:"100%",height:61,
               backgroundColor: isSelected ? "#F9F5F2" : "white",
               cursor: "pointer",
               transition: "0.2s ease", "&:hover": { backgroundColor: "#fafafa" } }}
              onClick={()=>handleSelectAddress(item.id)}>
-              <Avatar sx={{ bgcolor: "#691C2B",color:"#691C2B",width:"30px",height:"30px", mr: "8px" }}>
+              <Avatar sx={{ bgcolor: "#691C2B",color:"#691C2B",width:32,height:32, mr: 1.5 }}>
                 {iconMap[item.label]}
               </Avatar>
-              <Box sx={{textAlign:"left",px: 1.5,display:"flex",flexDirection: "column", width: "100%",borderBottom: "1px solid #E0E0E0",pb:"10px"}} >
-              <Typography fontWeight={600} sx={{lineHeight: "20px",mb:"5px"}}>{item.label}</Typography>
+              <Box sx={{textAlign:"left",px: 1.5,display:"flex",flexDirection: "column", width: "100%",borderBottom: "1px solid #E0E0E0",pb:1}} >
+              <Typography fontWeight={600} sx={{lineHeight: "20px",mb:0.5}}>{item.label}</Typography>
               <Typography color="text.secondary" sx={{fontSize:13,lineHeight: "18px"}}noWrap>{item.address}</Typography>
               </Box>
             </Box>
@@ -80,7 +80,8 @@ export default function OrderAddressSelection() {
 
         <Button fullWidth variant='outlined' onClick={handleAddNew}
          sx={{height:60,borderRadius:"12px",borderStyle:"dashed",borderWidth:"2px",
-          fontWeight:600,textTransform: "none", fontSize:"16px",justifyContent: "center",alignItems:"center",
+          fontWeight:600,textTransform: "none", fontSize:"16px",mt:4,
+          justifyContent: "center",alignItems:"center",
           "&:hover": {
            backgroundColor: "rgba(105, 28, 43, 0.04)",
            borderColor: "#691C2B",

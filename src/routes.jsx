@@ -10,36 +10,36 @@ import NewAddressForm from "./components/orders/NewAddressForm";
 import PaymentMethod from "./components/orders/PaymentMethod";
 import OrderSuccess from "./components/orders/OrderSuccess";
 import OrderAddressSelection from "./components/orders/OrderAddressSelection";
+import GlobalLayout from "./components/layout/GlobalLayout";
 
 export default function AppRoutes() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <>
-      {/* עמוד הלוגו יוצג מעל הכול כשהאתר טוען */}
+    <Router>
+      {/* LOADING PAGE */}
       {isLoading && (
         <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
           <LoadingPage />
         </div>
       )}
-
-      {/* עמוד הבית נטען ברקע */}
-      <div style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.5s ease" }}>    
-        <Router>
-        <Routes>
-        <Route path="/" element={<HomePage onLoaded={() => setIsLoading(false)} />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/packages/:vendorId" element={<PackageDetails />} />
-        <Route path="/summary" element={<OrderSummary/>} />
-        <Route path="/address" element={<OrderAddressSelection />} />
-        <Route path="/newAddress" element={<NewAddressForm />} />
-        <Route path="/paymentMethod" element={<PaymentMethod />} />
-        <Route path="/OrderSuccess" element={<OrderSuccess />} />
-        </Routes>
-        </Router>
+      {/* REAL CONTENT */}
+      <div style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.5s ease" }}>
+        <GlobalLayout>
+          <Routes>
+            <Route path="/" element={<HomePage onLoaded={() => setIsLoading(false)} />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/packages/:vendorId" element={<PackageDetails />} />
+            <Route path="/summary" element={<OrderSummary />} />
+            <Route path="/address" element={<OrderAddressSelection />} />
+            <Route path="/newAddress" element={<NewAddressForm />} />
+            <Route path="/paymentMethod" element={<PaymentMethod />} />
+            <Route path="/OrderSuccess" element={<OrderSuccess />} />
+          </Routes>
+        </GlobalLayout>
       </div>
-      
-    </>
+
+    </Router>
   );
 }
