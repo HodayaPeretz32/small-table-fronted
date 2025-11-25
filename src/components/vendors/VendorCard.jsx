@@ -26,7 +26,7 @@ export default function VendorCard({ vendore }) {
     >
       <CardMedia
         component="img"
-        image={vendore.image}
+        image={vendore.image ||  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop"}  // תמונה ברירת מחדל
         alt={vendore.business_name}
         sx={{ width: "100%", height: "100%", objectFit: "cover" }}
       />

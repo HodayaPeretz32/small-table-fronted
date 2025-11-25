@@ -78,28 +78,26 @@ export default function PackagePopup({ open, onClose, packageData, onSave }) {
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>{packageData.name}</DialogTitle>
       <DialogContent dividers>
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          מחיר למנה: ₪{packageData.price_per_person}
-        </Typography>
         <TextField
-          label="מספר סועדים"
-          type="number"
-          fullWidth
-          value={guestCount}
-          onChange={handleGuestChange}
-          inputProps={{
-            min: packageData.min_guests,
-            max: packageData.max_guests,
-          }}
-          sx={{ mb: 2 }}
-        />
+       label="מספר סועדים"
+        type="number"
+        fullWidth
+        value={guestCount}
+        onChange={handleGuestChange}
+        inputProps={{
+        min: packageData.min_guests,
+       max: packageData.max_guests,
+       step: "5"
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "-") e.preventDefault();
+  }}
+  sx={{ mb: 2 }}
+/>
         {packageData.packageCategories?.length > 0 ? (
           packageData.packageCategories.map((category) => (
             <div key={category.id} style={{ marginBottom: "1rem" }}>
               <Typography variant="h6">{category.name}</Typography>
-              {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-                {category.note || `בחר עד ${category.max_select || 1}`}
-              </Typography> */}
               {category.max_select > 0 && (
          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
              {category.note || `בחר עד ${category.max_select}`}
