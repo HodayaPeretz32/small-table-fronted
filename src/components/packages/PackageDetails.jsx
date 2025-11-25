@@ -1,12 +1,86 @@
-import { Box, Typography, Button } from "@mui/material";
+// import { Box, Typography, Button } from "@mui/material";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+// import PackageCard from "./PackageCard";
+// import { usePackageDetails } from "../../app/hooks/usePackageDetails";
+
+// export default function PackageDetails() {
+//   const { vendor, navigate } = usePackageDetails();
+
+//   if (!vendor) {
+//     return <Typography>לא נמצאו חבילות לספק זה</Typography>;
+//   }
+
+//   return (
+//     <Box sx={{ p: 3 }}>
+//       <Button
+//         onClick={() => navigate("/")}
+//         sx={{
+//           mb: 2,
+//           textTransform: "none",
+//           fontWeight: 500,
+//           color: "black",
+//           display: "flex",
+//           alignItems: "center",
+//           gap: 1,
+//           background: "transparent",
+//           boxShadow: "none",
+//           "&:hover": { backgroundColor: "transparent" },
+//         }}
+//       >
+//         <Box
+//           sx={{
+//             backgroundColor: "#f5f5f5",
+//             borderRadius: "50%",
+//             width: 32,
+//             height: 32,
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <ArrowBackIcon fontSize="small" />
+//         </Box>
+//         <Typography sx={{ fontSize: "16px" }}>חזור</Typography>
+//       </Button>
+
+//       <Typography variant="h5" sx={{ mb: 2, direction: "rtl", textAlign: "right" }}>
+//         {vendor.vendorName} – רשימת חבילות
+//       </Typography>
+
+//       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+//         {vendor.packages.map((pkg) => (
+//           <PackageCard key={pkg.id} pkg={pkg} />
+//         ))}
+//       </Box>
+//     </Box>
+//   );
+// }
+
+
+
+
+
+import { Box, Typography, Button, CircularProgress } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PackageCard from "./PackageCard";
 import { usePackageDetails } from "../../app/hooks/usePackageDetails";
 
 export default function PackageDetails() {
-  const { vendor, navigate } = usePackageDetails();
+  const { vendor, navigate, loading, error } = usePackageDetails();
 
-  if (!vendor) {
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
+
+  if (!vendor || vendor.packages.length === 0) {
     return <Typography>לא נמצאו חבילות לספק זה</Typography>;
   }
 
@@ -44,7 +118,7 @@ export default function PackageDetails() {
       </Button>
 
       <Typography variant="h5" sx={{ mb: 2, direction: "rtl", textAlign: "right" }}>
-        {vendor.vendorName} – רשימת חבילות
+        רשימת חבילות
       </Typography>
 
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>

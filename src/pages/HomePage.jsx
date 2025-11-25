@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import Navigation from "../components/layout/Navigation";
 import VendorFilter from "../components/vendors/VendorFilter";
 import VendorList from "../components/vendors/VendorList";
-import { useProviders } from "../components/vendors/VendorList";
+import { useVendorList } from "../app/hooks/useVendorList";
 import { Box } from "@mui/material";
 import Header from "../components/layout/Header";
 export default function HomePage({ onLoaded }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { providers: vendors, loading, error } = useProviders(searchQuery);
+  const { providers: vendors, loading, error } = useVendorList(searchQuery);
 
   // ברגע שהטעינה האמיתית הסתיימה — נסמן לאפליקציה להסתיר את הלוגו
   useEffect(() => {
@@ -31,3 +31,36 @@ export default function HomePage({ onLoaded }) {
     </div>
   );
 }
+
+
+// import { useState, useEffect } from "react";
+// import Navigation from "../components/layout/Navigation";
+// import VendorFilter from "../components/vendors/VendorFilter";
+// import VendorList from "../components/vendors/VendorList";
+// import { Box } from "@mui/material";
+// import Header from "../components/layout/Header";
+
+// export default function HomePage({ onLoaded }) {
+//   const [searchQuery, setSearchQuery] = useState("");
+
+//   useEffect(() => {
+//     if (onLoaded) {
+//       onLoaded();
+//     }
+//   }, [onLoaded]);
+
+//   return (
+//     <div className="">
+//       <main>
+//         <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, bgcolor: "white" }}>
+//           <Header name="חני" />
+//           <VendorFilter onSearch={setSearchQuery} />
+//         </Box>
+//         <Box sx={{ pb: 8, mt: 21 }}>
+//           <VendorList searchQuery={searchQuery} />
+//         </Box>
+//         <Navigation />
+//       </main>
+//     </div>
+//   );
+// }
