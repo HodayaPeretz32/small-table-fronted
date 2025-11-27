@@ -2,13 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const saved = localStorage.getItem("cart");
 const savedCart = saved ? JSON.parse(saved) : null;
+// const savedCart = saved ? JSON.parse(saved) : {};
 
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: savedCart?.items ?? [],
+    // items: Array.isArray(savedCart.items) ? savedCart.items : [],
     tip: savedCart?.tip ?? 0,
+    // tip: typeof savedCart.tip === "number" ? savedCart.tip : 0,
   },
 
   reducers: {
