@@ -1,31 +1,3 @@
-// // api/packagesApi.js
-// import api from "./axios";
-
-// // חבילות
-// export const getPackages = () => api.get("/packages/packages/");
-// export const createPackage = (data) => api.post("/packages/packages/", data);
-// export const getPackage = (id) => api.get(`/packages/packages/${id}/`);
-// export const updatePackage = (id, data) => api.put(`/packages/packages/${id}/`, data);
-// export const patchPackage = (id, data) => api.patch(`/packages/packages/${id}/`, data);
-// export const deletePackage = (id) => api.delete(`/packages/packages/${id}/`);
-// export const getMyPackages = () => api.get("/packages/packages/my_packages/");
-
-// // קטגוריות
-// export const getPackageCategories = () => api.get("/packages/package-categories/");
-// export const createPackageCategory = (data) => api.post("/packages/package-categories/", data);
-// export const getPackageCategory = (id) => api.get(`/packages/package-categories/${id}/`);
-// export const updatePackageCategory = (id, data) => api.put(`/packages/package-categories/${id}/`, data);
-// export const deletePackageCategory = (id) => api.delete(`/packages/package-categories/${id}/`);
-
-// // פריטים
-// export const getPackageItems = () => api.get("/packages/package-items/");
-// export const createPackageItem = (data) => api.post("/packages/package-items/", data);
-// export const getPackageItem = (id) => api.get(`/packages/package-items/${id}/`);
-// export const updatePackageItem = (id, data) => api.put(`/packages/package-items/${id}/`, data);
-// export const deletePackageItem = (id) => api.delete(`/packages/package-items/${id}/`);
-
-
-// api/packagesApi.js
 import api from "./axios";
 
 // חבילות

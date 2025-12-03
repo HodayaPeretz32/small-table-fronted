@@ -18,7 +18,7 @@ export const setAuthToken = (token) => {
   }
 };
 
-// טיפול אוטומטי בשגיאות (אפשר להרחיב לפי הצורך)
+// טיפול אוטומטי בשגיאות
 api.interceptors.response.use(
   response => response,
   error => {
