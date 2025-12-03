@@ -22,7 +22,8 @@ export default function NewAddressForm() {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      sx={{width: 335,margin: "0 auto",mt: 4,display: "flex",flexDirection: "column",gap: 2.5,}}
+      sx={{width: "100%",mt: 4,display: "flex",flexDirection: "column",gap: 2.5,
+        mx:"auto",px:2}}
     >
       <Box sx ={{display:"flex", alignItems: "center",mb:3}}>
         <IconButton onClick={handleBack}>

@@ -7,7 +7,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch} from "react-redux";
+import { clearCart } from "../../app/features/cartSlice";
 import { useState } from "react";
 import OrderSuccess from "./OrderSuccess";
   
@@ -16,13 +17,19 @@ import OrderSuccess from "./OrderSuccess";
     const [selected, setSelected] = useState("cash");
     const navigate = useNavigate();
     const [showSuccess, setShowSuccess] = useState(false);
-
+    const dispatch = useDispatch();
 
     const handleBack = () => navigate(-1);
+
     const handleChange = (value) => {
+      //לעדכן כאן בצורה נכונה
       setSelected(value);
-      //לעדכן כאן בצורה נכונה 
+      dispatch(clearCart());
     };    
+    const handleConfirmPayment = async () => {  
+      dispatch(clearCart());
+      setShowSuccess(true);
+    };
   
     return (
       <>
@@ -40,8 +47,8 @@ import OrderSuccess from "./OrderSuccess";
       />
     )}
       <Box
-        sx={{maxWidth: 375,mx: "auto", display: "flex",flexDirection: "column",
-        gap: "28px",mt: 3,width: 335}}
+        sx={{width:"100%",mx: "auto", display: "flex",flexDirection: "column",
+        gap: 3,mt: 3,px:2}}
         >
         <Box sx ={{display:"flex", alignItems: "center",mb:3}}>
         <IconButton onClick={handleBack}>
@@ -54,7 +61,7 @@ import OrderSuccess from "./OrderSuccess";
         <Typography sx={{ fontWeight: 700, fontSize: 14, mb: 1 ,textAlign:"left"}}>Cash</Typography>
         <Card 
         sx={{borderRadius: "12px",boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.05)",
-            border: "1px solid #F0F0F0",cursor: "pointer",width: 315,height:45,display: "flex",
+            border: "1px solid #F0F0F0",cursor: "pointer",width:"100%",height:45,display: "flex",
             alignItems: "center",justifyContent: "space-between",px: 2,
           }}>
             <Box 
@@ -73,7 +80,7 @@ import OrderSuccess from "./OrderSuccess";
         <Typography sx={{ fontWeight: 700, fontSize: 14, mb: 1 ,textAlign:"left"}}>Credit & Debit Card</Typography>
         <Card 
           sx={{borderRadius: "12px",backgroundColor: "#FFFFFF",boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.05)",
-            border: "1px solid #F0F0F0",cursor: "pointer",width: 315,height: 45,display: "flex",
+            border: "1px solid #F0F0F0",cursor: "pointer",width: "100%",height: 45,display: "flex",
             alignItems: "center",justifyContent: "space-between",px: 2,
           }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -99,7 +106,7 @@ import OrderSuccess from "./OrderSuccess";
               <Card
                 key={option.name}
                 sx={{borderRadius: "12px",backgroundColor: "#FFFFFF",boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.05)",
-                    border: "1px solid #F0F0F0",cursor: "pointer",width: 315,height: 45,display: "flex",
+                    border: "1px solid #F0F0F0",cursor: "pointer",width: "100%",height: 45,display: "flex",
                     alignItems: "center",justifyContent: "space-between",px: 2,
                   }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -120,7 +127,7 @@ import OrderSuccess from "./OrderSuccess";
            textTransform: "none", fontWeight: 500,
           "&:hover": { backgroundColor: "#551622" },
         }}
-        onClick={() => setShowSuccess(true)}
+        onClick={handleConfirmPayment}
         >CONFIRM PAYMENT
       </Button>
     </Box>

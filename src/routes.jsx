@@ -163,7 +163,6 @@
 
 
 
-
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -179,18 +178,18 @@ import PaymentMethod from "./components/orders/PaymentMethod";
 import OrderSuccess from "./components/orders/OrderSuccess";
 import OrderAddressSelection from "./components/orders/OrderAddressSelection";
 import LoadingPage from "./pages/LoadingPage";
+import GlobalLayout from "./components/layout/GlobalLayout";
 
 export default function AppRoutes() {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Timeout קטן ל־fallback, כדי שלא יהיה מסך לבן לנצח
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 3000); // 3 שניות max
+    const timer = setTimeout(() => setIsLoading(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <>
+    <Router>
       {/* מסך טעינה */}
       {isLoading && (
         <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
@@ -200,7 +199,7 @@ export default function AppRoutes() {
 
       {/* האפליקציה עצמה */}
       <div style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.5s ease" }}>
-        <Router>
+        <GlobalLayout>
           <Routes>
             <Route path="/login" element={<Login onLoaded={() => setIsLoading(false)} />} />
             <Route path="/signup" element={<SignUp onLoaded={() => setIsLoading(false)} />} />
@@ -214,8 +213,8 @@ export default function AppRoutes() {
             <Route path="/paymentMethod" element={<PaymentMethod />} />
             <Route path="/OrderSuccess" element={<OrderSuccess />} />
           </Routes>
-        </Router>
+        </GlobalLayout>
       </div>
-    </>
+    </Router>
   );
 }
