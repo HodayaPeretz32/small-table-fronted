@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://small-table.onrender.com/";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -18,7 +18,7 @@ export const setAuthToken = (token) => {
   }
 };
 
-// טיפול אוטומטי בשגיאות (אפשר להרחיב לפי הצורך)
+// טיפול אוטומטי בשגיאות
 api.interceptors.response.use(
   response => response,
   error => {
