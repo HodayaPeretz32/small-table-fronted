@@ -62,7 +62,6 @@
 //       });
 
 //       if (response.data.access) {
-//         // שמירת טוקנים
 //         localStorage.setItem("accessToken", response.data.access);
 //         localStorage.setItem("refreshToken", response.data.refresh);
 //         setAuthToken(response.data.access);
@@ -121,75 +120,80 @@
 //             </Typography>
 //           </Box>
 
-//           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-//             <TextField
-//               fullWidth
-//               type="text"
-//               name="username"
-//               label="USERNAME"
-//               placeholder="your_username"
-//               value={formData.username}
-//               onChange={handleChange}
-//               disabled={loading}
-//               variant="outlined"
-//               size="small"
-//               required
-//             />
+//           {/* כאן השינוי הכי חשוב */}
+//           <form onSubmit={handleLogin}>
+//             <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
-//             <TextField
-//               fullWidth
-//               type={showPassword ? "text" : "password"}
-//               name="password"
-//               label="PASSWORD"
-//               placeholder="••••••••"
-//               value={formData.password}
-//               onChange={handleChange}
-//               disabled={loading}
-//               variant="outlined"
-//               size="small"
-//               required
-//               InputProps={{
-//                 endAdornment: (
-//                   <InputAdornment position="end">
-//                     <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small">
-//                       {showPassword ? <VisibilityOff /> : <Visibility />}
-//                     </IconButton>
-//                   </InputAdornment>
-//                 ),
-//               }}
-//             />
+//               <TextField
+//                 fullWidth
+//                 type="text"
+//                 name="username"
+//                 label="USERNAME"
+//                 placeholder="your_username"
+//                 value={formData.username}
+//                 onChange={handleChange}
+//                 disabled={loading}
+//                 variant="outlined"
+//                 size="small"
+//                 required
+//               />
 
-//             <FormControlLabel
-//               control={
-//                 <Checkbox
-//                   name="rememberMe"
-//                   checked={formData.rememberMe}
-//                   onChange={handleChange}
-//                   size="small"
-//                 />
-//               }
-//               label={<Typography variant="caption">Remember me</Typography>}
-//             />
+//               <TextField
+//                 fullWidth
+//                 type={showPassword ? "text" : "password"}
+//                 name="password"
+//                 label="PASSWORD"
+//                 placeholder="••••••••"
+//                 value={formData.password}
+//                 onChange={handleChange}
+//                 disabled={loading}
+//                 variant="outlined"
+//                 size="small"
+//                 required
+//                 InputProps={{
+//                   endAdornment: (
+//                     <InputAdornment position="end">
+//                       <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small">
+//                         {showPassword ? <VisibilityOff /> : <Visibility />}
+//                       </IconButton>
+//                     </InputAdornment>
+//                   ),
+//                 }}
+//               />
 
-//             {message && <Alert severity={messageType}>{message}</Alert>}
+//               <FormControlLabel
+//                 control={
+//                   <Checkbox
+//                     name="rememberMe"
+//                     checked={formData.rememberMe}
+//                     onChange={handleChange}
+//                     size="small"
+//                   />
+//                 }
+//                 label={<Typography variant="caption">Remember me</Typography>}
+//               />
 
-//             <Button
-//               fullWidth
-//               onClick={handleLogin}
-//               disabled={loading}
-//               variant="contained"
-//               sx={{ backgroundColor: "#5c1a2f", color: "white", padding: "12px", fontWeight: "bold" }}
-//             >
-//               {loading ? (
-//                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-//                   <CircularProgress size={20} color="inherit" />
-//                   LOGGING IN...
-//                 </Box>
-//               ) : (
-//                 "LOG IN"
-//               )}
-//             </Button>
-//           </Box>
+//               {message && <Alert severity={messageType}>{message}</Alert>}
+
+//               <Button
+//                 fullWidth
+//                 type="submit"
+//                 disabled={loading}
+//                 variant="contained"
+//                 sx={{ backgroundColor: "#5c1a2f", color: "white", padding: "12px", fontWeight: "bold" }}
+//               >
+//                 {loading ? (
+//                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+//                     <CircularProgress size={20} color="inherit" />
+//                     LOGGING IN...
+//                   </Box>
+//                 ) : (
+//                   "LOG IN"
+//                 )}
+//               </Button>
+
+//             </Box>
+//           </form>
 
 //           <Box sx={{ textAlign: "center", marginTop: "24px" }}>
 //             <Typography variant="body2" sx={{ color: "#666" }}>
@@ -222,7 +226,7 @@
 
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/usersApi";
 import {
@@ -285,13 +289,18 @@ const Login = () => {
         password: formData.password,
       });
 
-      if (response.data.access) {
+      // שמירה לפי Remember me
+      if (formData.rememberMe) {
+        localStorage.setItem("username", formData.username);
         localStorage.setItem("accessToken", response.data.access);
         localStorage.setItem("refreshToken", response.data.refresh);
-        setAuthToken(response.data.access);
+      } else {
+        sessionStorage.setItem("username", formData.username);
+        sessionStorage.setItem("accessToken", response.data.access);
+        sessionStorage.setItem("refreshToken", response.data.refresh);
       }
 
-      localStorage.setItem("username", formData.username);
+      setAuthToken(response.data.access);
 
       setMessage("התחברת בהצלחה! ✓");
       setMessageType("success");
@@ -316,6 +325,13 @@ const Login = () => {
     }
   };
 
+  // בדיקה בזמן טעינת האתר - בודק האם יש username ב-localStorage או sessionStorage
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    const storedName = localStorage.getItem("username") || sessionStorage.getItem("username");
+    if (storedName) setUsername(storedName);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -336,18 +352,24 @@ const Login = () => {
           }}
         >
           <Box sx={{ textAlign: "center", marginBottom: "32px" }}>
-            <Typography variant="h4" sx={{ fontWeight: "bold", color: "#333", marginBottom: "8px" }}>
-              Log In
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#666" }}>
-              Please sign in to your existing account
-            </Typography>
+            {username ? (
+              <Typography variant="h5" sx={{ fontWeight: "bold", color: "#333" }}>
+                היי {username}!
+              </Typography>
+            ) : (
+              <>
+                <Typography variant="h4" sx={{ fontWeight: "bold", color: "#333", marginBottom: "8px" }}>
+                  Log In
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Please sign in to your existing account
+                </Typography>
+              </>
+            )}
           </Box>
 
-          {/* כאן השינוי הכי חשוב */}
           <form onSubmit={handleLogin}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-
               <TextField
                 fullWidth
                 type="text"
@@ -415,7 +437,6 @@ const Login = () => {
                   "LOG IN"
                 )}
               </Button>
-
             </Box>
           </form>
 
