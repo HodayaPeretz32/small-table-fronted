@@ -10,7 +10,24 @@ export const deleteUser = (id) => api.delete(`/api/users/${id}/`);
 // export const loginUser = (data) => api.post("/api/token/", data); // כניסה
 
 // התחברות (Login) - מחזיר JWT token
-export const loginUser = (data) => api.post("/api/auth/login", {
-  username: data.username,  // לוודא שזה תואם לשדה במודל המשתמש
-  password: data.password
-});
+// export const loginUser = (data) => api.post("/api/auth/login", {
+//   username: data.username,  // לוודא שזה תואם לשדה במודל המשתמש
+//   password: data.password
+// });
+
+
+
+export const loginUser = async (data) => {
+  return await api.post(
+    "/api/auth/login/",
+    {
+      username: data.username,
+      password: data.password,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
