@@ -19,10 +19,22 @@ export default function HomePage({ onLoaded }) {
   }, []);
 
   // קריאת שם המשתמש מ-localStorage
-  useEffect(() => {
+  // useEffect(() => {
+  //   const storedName = localStorage.getItem("username");
+  //   if (storedName) setUsername(storedName);
+  // }, []);
+
+useEffect(() => {
+  const storedName = sessionStorage.getItem("username");
+  if (storedName) {
+    setUsername(storedName);
+  } else {
     const storedName = localStorage.getItem("username");
     if (storedName) setUsername(storedName);
-  }, []);
+  }
+}, []);
+
+
 
   // כשטעינת הנתונים הסתיימה וגם הדקה המינימלית חלפה — נסמן שהלוגו יכול להיעלם
   useEffect(() => {
