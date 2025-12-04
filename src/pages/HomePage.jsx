@@ -18,11 +18,6 @@ export default function HomePage({ onLoaded }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // קריאת שם המשתמש מ-localStorage
-  // useEffect(() => {
-  //   const storedName = localStorage.getItem("username");
-  //   if (storedName) setUsername(storedName);
-  // }, []);
 
 useEffect(() => {
   const storedName = sessionStorage.getItem("username");
