@@ -60,6 +60,7 @@ const SignUp = () => {
         phone: formData.phone,
         password: formData.password
       });
+      localStorage.setItem('username', formData.username);
 
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
